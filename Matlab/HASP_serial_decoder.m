@@ -4,7 +4,7 @@ close all
 %Download the files for today
 %NOTE: This may cause the program not to get any new information !!!!!!
 %date=datestr(now,'mm-dd');
-     date='09-05';
+     date='09-07';
      
 datarecord_length = 26;
 checksum_position = 24;
@@ -24,7 +24,7 @@ start_time = '4h and ';
 mod_values = ['OFDM' 'QPS' 'BPSK' 'ASK'];
 freq_values = [445 446 447 448];
 
-%% Download files
+% Download files
 %Url for payload 5 data
 url =  'http://laspace.lsu.edu/hasp/groups/2015/data/data.php?pname=Payload_05&py=2015';
 
@@ -144,6 +144,12 @@ vcoON = (rawdata(:,18));
 
 time=rawdata(:,19)+bitshift(rawdata(:,20),8)+bitshift(rawdata(:,21),16)+bitshift(rawdata(:,22),24);
 
+% Treat currentVCO values as signed bytes
+for i=1:length(currentVCO)
+    if currentVCO(i) > 127
+        currentVCO(i) = currentVCO(i) - 256;
+    end
+end
 
 %% Plot the results
 %Plot time: in case there is a missing sample
